@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.13.0b4-slim
 
 # add apache bench (ab) tool
 RUN apt-get update \
