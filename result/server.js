@@ -2,11 +2,21 @@ var express = require('express'),
     async = require('async'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
+    RateLimit = require('express-rate-limit'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server);
 
 var port = process.env.PORT || 4000;
+
+// set up rate limiter: maximum of 100 requests per 15 minutes
+var limiter = RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
+
+// apply rate limiter to all requests
+app.use(limiter);
 
 io.on('connection', function (socket) {
 
